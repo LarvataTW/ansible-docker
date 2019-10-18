@@ -1,0 +1,34 @@
+---
+
+#- name: Uninstall potential conflicts python packages by pip.
+#  pip: name="{{ item }}" state=absent
+#  with_items:
+#    - docker
+#    - docker-py
+#    - docker-compose
+#  tags:
+#    - pip
+
+#- name: Install docker python packages by pip
+#  pip: name=docker-compose state=latest
+#  tags:
+#    - pip
+
+- name: Create /etc/docker directory
+  file: path=/etc/docker/ state=directory
+  register: create_etc_docker_directory
+  tags:
+    - daemon
+
+- name: Config custom /etc/docker/daemon.json
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+    mode: 0644
+    backup: yes
+  register: config_custom_docker_daemon
+  when:
+    - create_etc_docker_directory
+    - docker_custom_daemon != ""
+  tags:
+    - daemon

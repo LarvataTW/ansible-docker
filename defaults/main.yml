@@ -1,0 +1,27 @@
+---
+
+### /etc/docker/daemon.json for AWS CloudWatch
+
+#docker_custom_daemon: |
+#  {
+#    "raw-logs": true,
+#    "log-driver": "awslogs",
+#    "log-opts": {
+#      "awslogs-region": "{{ aws_region }}",
+#      "awslogs-group": "{{ awslogs_group }}",
+#      "tag": "{{ inventory_hostname }}/docker/{% raw %}{{ .Name }}{% endraw %}"
+#    }
+#  }
+
+### /etc/docker/daemon.json for local logs
+
+docker_custom_daemon: |
+  {
+    "live-restore": true,
+    "log-driver": "json-file",
+    "log-opts": {
+      "max-size": "10m",
+      "max-file": "3",
+      "tag": "{{ inventory_hostname }}_{% raw %}{{ .Name }}{% endraw %}"
+    }
+  }
