@@ -4,6 +4,13 @@
 
 #docker_custom_daemon: |
 #  {
+#    "default-address-pools": [
+#      {
+#        "base":"172.22.0.0/16",
+#        "size":24
+#      }
+#    ],
+#    "live-restore": true,
 #    "raw-logs": true,
 #    "log-driver": "awslogs",
 #    "log-opts": {
@@ -17,6 +24,12 @@
 
 docker_custom_daemon: |
   {
+    "default-address-pools": [
+      {
+        "base":"10.10.0.0/16",
+        "size":24
+      }
+    ],
     "live-restore": true,
     "log-driver": "json-file",
     "log-opts": {
