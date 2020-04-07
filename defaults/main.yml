@@ -1,40 +1,43 @@
 ---
 
-### /etc/docker/daemon.json for AWS CloudWatch
-
-#docker_custom_daemon: |
-#  {
-#    "default-address-pools": [
-#      {
-#        "base":"172.22.0.0/16",
-#        "size":24
-#      }
-#    ],
-#    "live-restore": true,
-#    "raw-logs": true,
-#    "log-driver": "awslogs",
-#    "log-opts": {
-#      "awslogs-region": "{{ aws_region }}",
-#      "awslogs-group": "{{ awslogs_group }}",
-#      "tag": "{{ inventory_hostname }}/docker/{% raw %}{{ .Name }}{% endraw %}"
-#    }
-#  }
-
-### /etc/docker/daemon.json for local logs
+### /etc/docker/daemon.json
 
 docker_custom_daemon: |
   {
     "default-address-pools": [
       {
-        "base":"10.10.0.0/16",
+        "base":"172.22.0.0/16",
         "size":24
       }
     ],
+    "insecure-registries": [
+      "registry.internal.network",
+      "registry.local.network"
+    ],
     "live-restore": true,
+    "raw-logs": true,
     "log-driver": "json-file",
     "log-opts": {
       "max-size": "10m",
       "max-file": "3",
-      "tag": "{{ inventory_hostname }}_{% raw %}{{ .Name }}{% endraw %}"
+      "tag": "{{ inventory_hostname }}/{% raw %}{{.ImageName}}/{{.Name}}/{{.ID}}{% endraw %}"
     }
   }
+
+# syslog driver example
+#
+#   "log-driver": "syslog",
+#   "log-opts": {
+#     "syslog-format": "rfc5424",
+#     "syslog-facility": "23",
+#     "tag": "{{ inventory_hostname }}/{% raw %}{{.ImageName}}/{{.Name}}/{{.ID}}{% endraw %}"
+#   }
+
+# awslogs driver example
+#
+#   "log-driver": "awslogs",
+#   "log-opts": {
+#     "awslogs-region": "{{ aws_region }}",
+#     "awslogs-group": "{{ awslogs_group }}",
+#     "tag": "{{ inventory_hostname }}/{% raw %}{{.ImageName}}/{{.Name}}/{{.ID}}{% endraw %}"
+#   }
