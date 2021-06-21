@@ -20,6 +20,7 @@ docker_custom_daemon: |
     "log-opts": {
       "max-size": "10m",
       "max-file": "3",
+      "labels": "{{ inventory_hostname }},{% raw %}{{.Name}}{% raw %}",
       "tag": "{{ inventory_hostname }}/{% raw %}{{.ImageName}}/{{.Name}}/{{.ID}}{% endraw %}"
     }
   }
@@ -30,6 +31,7 @@ docker_custom_daemon: |
 #   "log-opts": {
 #     "syslog-format": "rfc5424",
 #     "syslog-facility": "23",
+#     "labels": "{{ inventory_hostname }},{% raw %}{{.Name}}{% raw %}",
 #     "tag": "{{ inventory_hostname }}/{% raw %}{{.ImageName}}/{{.Name}}/{{.ID}}{% endraw %}"
 #   }
 

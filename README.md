@@ -1,4 +1,9 @@
-# Docker Role
+# Custom Docker Configuration
 
-Using geerlingguy.docker to install docker,
-and use this role to modify the /etc/docker/daemon.json file.
+## Requirements
+
+- [geerlingguy.docker](https://github.com/geerlingguy/ansible-role-docker)
+
+## Role Variables
+
+[defaults/main.yml](defaults/main.yml)
