@@ -43,3 +43,18 @@ docker_custom_daemon: |
 #     "awslogs-group": "{{ awslogs_group }}",
 #     "tag": "{{ inventory_hostname }}/{% raw %}{{.ImageName}}/{{.Name}}/{{.ID}}{% endraw %}"
 #   }
+
+### ~/.docker/config.json
+
+docker_custom_config: |
+  {
+   "proxies":
+   {
+     "default":
+     {
+       "httpProxy": "http://127.0.0.1:3001",
+       "httpsProxy": "http://127.0.0.1:3001",
+       "noProxy": "*.test.com,.example2.com,127.0.0.0/8"
+     }
+   }
+  }

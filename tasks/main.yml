@@ -1,10 +1,12 @@
 ---
 
+### /etc/docker/daemon.json
+
 - name: Create /etc/docker directory
-  file: path=/etc/docker/ state=directory
+  file:
+    path: /etc/docker/
+    state: directory
   register: create_etc_docker_directory
-  tags:
-    - daemon
 
 - name: Config custom /etc/docker/daemon.json
   template:
@@ -16,5 +18,23 @@
   when:
     - create_etc_docker_directory
     - docker_custom_daemon != ""
-  tags:
-    - daemon
+
+### ~/.docker/config.json
+
+- name: Create ~/.docker directory
+  file:
+    path: "{{ ansible_env.HOME }}/.docker"
+    state: directory
+  register: create_user_docker_directory
+  become_user: "{{ ansible_user }}"
+
+- name: Config custom ~/.docker/config.json
+  template:
+    src: config.json.j2
+    dest: "{{ ansible_env.HOME }}/.docker/config.json"
+    mode: 0644
+    backup: yes
+  become_user: "{{ ansible_user }}"
+  when:
+    - create_user_docker_directory
+    - docker_custom_config != ""
