@@ -4,6 +4,10 @@
 
 docker_custom_daemon: |
   {
+    "ip": "0.0.0.0",
+    "metrics-addr": "0.0.0.0:9323",
+    "experimental": true,
+    "live-restore": true,
     "default-address-pools": [
       {
         "base":"172.22.0.0/16",
@@ -14,7 +18,13 @@ docker_custom_daemon: |
       "registry.internal.network",
       "registry.local.network"
     ],
-    "live-restore": true,
+    "default-ulimits": {
+      "nofile": {
+        "Name": "nofile",
+        "Hard": 65535,
+        "Soft": 65535
+      }
+    },
     "raw-logs": true,
     "log-driver": "json-file",
     "log-opts": {
